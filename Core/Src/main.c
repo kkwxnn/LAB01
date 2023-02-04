@@ -65,6 +65,9 @@ PortPin L[4] =
 };
 
 uint16_t ButtonMatrix = 0;
+int ButtonMatrix_L = 0;
+int ButtonMatrix_F = 0;
+int Keypad = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -72,7 +75,7 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN PFP */
-void ReadMatixButton();
+void ReadMatrixButton();
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -127,7 +130,137 @@ int main(void)
 		  timestamp = HAL_GetTick() + 10; //ms
 		  ReadMatrixButton();
 	  }
-  }
+
+	  if(ButtonMatrix_L == 0 && ButtonMatrix != 0)
+	  {
+		  ButtonMatrix_F = 1;
+	  }
+	  else
+	  {
+		  ButtonMatrix_F = 0;
+	  }
+	  ButtonMatrix_L = ButtonMatrix;
+
+	  switch (Keypad)
+	  {
+		case 0:
+			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, 1);
+			if (ButtonMatrix == 512 && ButtonMatrix_F == 1) {
+				Keypad = 1;
+			}
+			else if (ButtonMatrix != 512 && ButtonMatrix_F == 1) {
+				Keypad = 13;
+			}
+			else if (ButtonMatrix == 4096 && ButtonMatrix_F == 1){
+				Keypad = 0;
+			}
+			break;
+		case 1:
+			if (ButtonMatrix == 2 && ButtonMatrix_F == 1) {
+				Keypad = 2;
+			}
+			else if (ButtonMatrix != 2 && ButtonMatrix_F == 1) {
+				Keypad = 13;
+			}
+			break;
+		case 2:
+			if (ButtonMatrix == 256 && ButtonMatrix_F == 1) {
+				Keypad = 3;
+			}
+			else if (ButtonMatrix != 256 && ButtonMatrix_F == 1) {
+				Keypad = 13;
+			}
+			break;
+		case 3:
+			if (ButtonMatrix == 2 && ButtonMatrix_F == 1) {
+				Keypad = 4;
+			}
+			else if (ButtonMatrix != 2 && ButtonMatrix_F == 1) {
+				Keypad = 13;
+			}
+			break;
+		case 4:
+			if (ButtonMatrix == 8 && ButtonMatrix_F == 1) {
+				Keypad = 5;
+			}
+			else if (ButtonMatrix != 8 && ButtonMatrix_F == 1) {
+				Keypad = 13;
+			}
+			break;
+		case 5:
+			if (ButtonMatrix == 32 && ButtonMatrix_F == 1) {
+				Keypad = 6;
+			}
+			else if (ButtonMatrix != 32 && ButtonMatrix_F == 1) {
+				Keypad = 13;
+			}
+			break;
+		case 6:
+			if (ButtonMatrix == 8 && ButtonMatrix_F == 1) {
+				Keypad = 7;
+			}
+			else if (ButtonMatrix != 8 && ButtonMatrix_F == 1) {
+				Keypad = 13;
+			}
+			break;
+		case 7:
+			if (ButtonMatrix == 8 && ButtonMatrix_F == 1) {
+				Keypad = 8;
+			}
+			else if (ButtonMatrix != 8 && ButtonMatrix_F == 1) {
+				Keypad = 13;
+			}
+			break;
+		case 8:
+			if (ButtonMatrix == 8 && ButtonMatrix_F == 1) {
+				Keypad = 9;
+			}
+			else if (ButtonMatrix != 8 && ButtonMatrix_F == 1) {
+				Keypad = 13;
+			}
+			break;
+		case 9:
+			if (ButtonMatrix == 4 && ButtonMatrix_F == 1) {
+				Keypad = 10;
+			}
+			else if (ButtonMatrix != 4 && ButtonMatrix_F == 1) {
+				Keypad = 13;
+			}
+			break;
+		case 10:
+			if (ButtonMatrix == 1 && ButtonMatrix_F == 1) {
+				Keypad = 11;
+			}
+			else if (ButtonMatrix != 1 && ButtonMatrix_F == 1) {
+				Keypad = 13;
+			}
+			break;
+		case 11:
+			if (ButtonMatrix == 32768 && ButtonMatrix_F == 1) {
+				Keypad = 12;
+			}
+			else if (ButtonMatrix != 32768 && ButtonMatrix_F == 1) {
+				Keypad = 13;
+			}
+			break;
+		case 12:
+			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, 0);
+			if (ButtonMatrix_F == 1){
+				Keypad = 13;
+			}
+	  	  	break;
+	  	case 13:
+	  		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, 1);
+	  		if (ButtonMatrix == 4096 && ButtonMatrix_F == 1){
+	  			Keypad = 0;
+	  		}
+	  		else if (ButtonMatrix != 4096 && ButtonMatrix_F == 1) {
+	  			Keypad = 13;
+	  		}
+	  		break;
+
+		}
+	}
   /* USER CODE END 3 */
 }
 
@@ -226,10 +359,13 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, LD2_Pin|GPIO_PIN_10, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, LD2_Pin|GPIO_PIN_6, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3|GPIO_PIN_4|GPIO_PIN_5, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_10, GPIO_PIN_SET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3|GPIO_PIN_4|GPIO_PIN_5, GPIO_PIN_SET);
 
   /*Configure GPIO pin : B1_Pin */
   GPIO_InitStruct.Pin = B1_Pin;
@@ -237,8 +373,8 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : LD2_Pin PA10 */
-  GPIO_InitStruct.Pin = LD2_Pin|GPIO_PIN_10;
+  /*Configure GPIO pins : LD2_Pin PA6 */
+  GPIO_InitStruct.Pin = LD2_Pin|GPIO_PIN_6;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -247,18 +383,25 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pins : PA7 PA9 */
   GPIO_InitStruct.Pin = GPIO_PIN_7|GPIO_PIN_9;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PC7 */
   GPIO_InitStruct.Pin = GPIO_PIN_7;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : PA10 */
+  GPIO_InitStruct.Pin = GPIO_PIN_10;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PB3 PB4 PB5 */
   GPIO_InitStruct.Pin = GPIO_PIN_3|GPIO_PIN_4|GPIO_PIN_5;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
@@ -266,7 +409,7 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin : PB6 */
   GPIO_InitStruct.Pin = GPIO_PIN_6;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
 }
