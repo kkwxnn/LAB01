@@ -148,16 +148,19 @@ int main(void)
 			if (ButtonMatrix == 512 && ButtonMatrix_F == 1) {
 				Keypad = 1;
 			}
-			else if (ButtonMatrix != 512 && ButtonMatrix_F == 1) {
-				Keypad = 13;
-			}
 			else if (ButtonMatrix == 4096 && ButtonMatrix_F == 1){
 				Keypad = 0;
+			}
+			else if (ButtonMatrix != 512 && ButtonMatrix_F == 1) {
+				Keypad = 13;
 			}
 			break;
 		case 1:
 			if (ButtonMatrix == 2 && ButtonMatrix_F == 1) {
 				Keypad = 2;
+			}
+			else if (ButtonMatrix == 4096 && ButtonMatrix_F == 1) {
+				Keypad = 0;
 			}
 			else if (ButtonMatrix != 2 && ButtonMatrix_F == 1) {
 				Keypad = 13;
@@ -167,6 +170,9 @@ int main(void)
 			if (ButtonMatrix == 256 && ButtonMatrix_F == 1) {
 				Keypad = 3;
 			}
+			else if (ButtonMatrix == 4096 && ButtonMatrix_F == 1) {
+				Keypad = 0;
+			}
 			else if (ButtonMatrix != 256 && ButtonMatrix_F == 1) {
 				Keypad = 13;
 			}
@@ -174,6 +180,9 @@ int main(void)
 		case 3:
 			if (ButtonMatrix == 2 && ButtonMatrix_F == 1) {
 				Keypad = 4;
+			}
+			else if (ButtonMatrix == 4096 && ButtonMatrix_F == 1) {
+				Keypad = 0;
 			}
 			else if (ButtonMatrix != 2 && ButtonMatrix_F == 1) {
 				Keypad = 13;
@@ -183,6 +192,9 @@ int main(void)
 			if (ButtonMatrix == 8 && ButtonMatrix_F == 1) {
 				Keypad = 5;
 			}
+			else if (ButtonMatrix == 4096 && ButtonMatrix_F == 1) {
+				Keypad = 0;
+			}
 			else if (ButtonMatrix != 8 && ButtonMatrix_F == 1) {
 				Keypad = 13;
 			}
@@ -190,6 +202,9 @@ int main(void)
 		case 5:
 			if (ButtonMatrix == 32 && ButtonMatrix_F == 1) {
 				Keypad = 6;
+			}
+			else if (ButtonMatrix == 4096 && ButtonMatrix_F == 1) {
+				Keypad = 0;
 			}
 			else if (ButtonMatrix != 32 && ButtonMatrix_F == 1) {
 				Keypad = 13;
@@ -199,6 +214,9 @@ int main(void)
 			if (ButtonMatrix == 8 && ButtonMatrix_F == 1) {
 				Keypad = 7;
 			}
+			else if (ButtonMatrix == 4096 && ButtonMatrix_F == 1) {
+				Keypad = 0;
+			}
 			else if (ButtonMatrix != 8 && ButtonMatrix_F == 1) {
 				Keypad = 13;
 			}
@@ -206,6 +224,9 @@ int main(void)
 		case 7:
 			if (ButtonMatrix == 8 && ButtonMatrix_F == 1) {
 				Keypad = 8;
+			}
+			else if (ButtonMatrix == 4096 && ButtonMatrix_F == 1) {
+				Keypad = 0;
 			}
 			else if (ButtonMatrix != 8 && ButtonMatrix_F == 1) {
 				Keypad = 13;
@@ -215,6 +236,9 @@ int main(void)
 			if (ButtonMatrix == 8 && ButtonMatrix_F == 1) {
 				Keypad = 9;
 			}
+			else if (ButtonMatrix == 4096 && ButtonMatrix_F == 1) {
+				Keypad = 0;
+			}
 			else if (ButtonMatrix != 8 && ButtonMatrix_F == 1) {
 				Keypad = 13;
 			}
@@ -222,6 +246,9 @@ int main(void)
 		case 9:
 			if (ButtonMatrix == 4 && ButtonMatrix_F == 1) {
 				Keypad = 10;
+			}
+			else if (ButtonMatrix == 4096 && ButtonMatrix_F == 1) {
+				Keypad = 0;
 			}
 			else if (ButtonMatrix != 4 && ButtonMatrix_F == 1) {
 				Keypad = 13;
@@ -231,6 +258,9 @@ int main(void)
 			if (ButtonMatrix == 1 && ButtonMatrix_F == 1) {
 				Keypad = 11;
 			}
+			else if (ButtonMatrix == 4096 && ButtonMatrix_F == 1) {
+				Keypad = 0;
+			}
 			else if (ButtonMatrix != 1 && ButtonMatrix_F == 1) {
 				Keypad = 13;
 			}
@@ -239,13 +269,19 @@ int main(void)
 			if (ButtonMatrix == 32768 && ButtonMatrix_F == 1) {
 				Keypad = 12;
 			}
+			else if (ButtonMatrix == 4096 && ButtonMatrix_F == 1) {
+				Keypad = 0;
+			}
 			else if (ButtonMatrix != 32768 && ButtonMatrix_F == 1) {
 				Keypad = 13;
 			}
 			break;
 		case 12:
 			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, 0);
-			if (ButtonMatrix_F == 1){
+			if (ButtonMatrix == 4096 && ButtonMatrix_F == 1){
+				Keypad = 0;
+			}
+			else if (ButtonMatrix != 4096 && ButtonMatrix_F == 1) {
 				Keypad = 13;
 			}
 	  	  	break;
